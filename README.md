@@ -1,5 +1,4 @@
 # race-RL
-This is my first AI example in GitHub.
 
 This repo includes a Python game with the Reinforcement Learning algorithm.
 
