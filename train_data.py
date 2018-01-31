@@ -39,7 +39,7 @@ def train_model(training_data, model=False):
     if not model:
         model = neural_network_model(input_size = len(X[0]))
     
-    model.fit({'input': X}, {'targets': y}, n_epoch=30, snapshot_step=500, show_metric=False)
+    model.fit({'input': X}, {'targets': y}, n_epoch=5, snapshot_step=500, show_metric=False)
     return model
 
 

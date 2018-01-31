@@ -3,12 +3,12 @@ import random
 import numpy as np
 from statistics import mean
 
-num_of_iteration = 5000
+num_of_iteration = 50000
 
 training_data = []
 accepted_scores = []
 
-quick_collect = 1
+quick_collect = 1 # To collect data without watching the, set this value as 1.
 game_reset()
 
 for i in range(num_of_iteration):
@@ -19,7 +19,7 @@ for i in range(num_of_iteration):
     done = 0
     score = 0
 
-    #We're making our random move and hold the output
+    #We're making our random move and hold the output if it satisfy the score and danger criteria
     action = [0,0,0]
     action[random.randrange(3)] = 1
     output = game_loop(action,quick_collect)
@@ -29,18 +29,16 @@ for i in range(num_of_iteration):
     
     done = output[5]
 
-    if score >0:
+    if score >= 0.01:
         training_data.append([output[:3],action])
         accepted_scores.append(score)
-    elif score == 0:
+    elif score > 0 and score < 0.01:
         if danger == 0:
             training_data.append([output[:3],action])
             accepted_scores.append(score)
-
     
     if done:
         game_reset()
-        print("iteration:",i)
         
 
 training_data_save = np.array(training_data)
