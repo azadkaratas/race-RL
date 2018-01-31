@@ -24,7 +24,7 @@ def neural_network_model(input_size):
     network = fully_connected(network, 128, activation='relu')
     network = dropout(network, 0.8)
 
-    network = fully_connected(network, 3, activation='softmax')
+    network = fully_connected(network, input_size, activation='softmax')
     network = regression(network, optimizer='adam', learning_rate=LR, loss='categorical_crossentropy', name='targets')
     model = tflearn.DNN(network, tensorboard_dir='log')
 
@@ -33,18 +33,17 @@ def neural_network_model(input_size):
 
 def train_model(training_data, model=False):
 
-    X_woScaled = np.array([i[0] for i in training_data]).reshape(-1,len(training_data[0][0]),1)
-    X = (X_woScaled - np.min(X_woScaled))/(np.max(X_woScaled) - np.min(X_woScaled))
+    X = np.array([i[0] for i in training_data]).reshape(-1,len(training_data[0][0]),1)
     y = [i[1] for i in training_data]
 
     if not model:
         model = neural_network_model(input_size = len(X[0]))
     
-    model.fit({'input': X}, {'targets': y}, n_epoch=1, snapshot_step=100, show_metric=False)
+    model.fit({'input': X}, {'targets': y}, n_epoch=30, snapshot_step=500, show_metric=False)
     return model
 
 
-training_data = np.load('saved2.npy')
+training_data = np.load('saved.npy')
 
 model = train_model(training_data)
-model.save('ucuncuModelimiz.model')
+model.save('firstModel.model')
